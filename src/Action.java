@@ -1,4 +1,9 @@
 
 public enum Action {
-	STAND,BUNT,LTOUCH,RTOUCH,UNSTAND,UNTOUCH;
+	STAND,
+	BUNT,//»÷ÖÐ
+	LTOUCH,//×óÅö×²
+	RTOUCH,//ÓÒÅö×²
+	UNSTAND,
+	UNTOUCH;
 }

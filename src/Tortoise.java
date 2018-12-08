@@ -211,7 +211,7 @@ class Tortoise extends GameCreature
 		if(touchhero==Action.BUNT)
 		{
 			hit_time++;
-			hero.yspe=-hero.y_add;
+			hero.yspe=-hero.Y_ADD;
 			hit=true;
 			if(hit==true)
 			{

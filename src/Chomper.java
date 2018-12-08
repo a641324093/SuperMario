@@ -81,7 +81,7 @@ class Chomper extends GameCreature
 		{
 			if(d_time<=2)
 			{
-				all_h=48;
+				all_h=obj_h;
 				img=obj_imgs.get("F3");
 				d_time++;
 			}

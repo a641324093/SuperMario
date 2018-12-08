@@ -142,7 +142,7 @@ class Fungus extends GameCreature
 		super.action();
 		if(touchhero==Action.BUNT)
 		{
-			hero.yspe=-hero.y_add;
+			hero.yspe=-hero.Y_ADD;
 			if(hit==true)
 			{
 				disappear();

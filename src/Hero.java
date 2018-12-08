@@ -10,13 +10,23 @@ import java.util.Map;
 
 class Hero 
 {
-	protected static final int XSPE=12,YSPE=27;
-	public int spe_add=2,xspe=0,yspe=0,spe1=0,rub_add=1,g_add=3,y_add=17,j_time=0,j_lim=2,die_t=0;
+	protected static final int XSPE_MAX_LIMIT=12,YSPE_MAX_LIMIT=27;
+	protected static final int X_ADD=2;//加速度单位值
+	protected static final int G_ADD=3;//重力加速度单位值
+	protected static final int Y_ADD=17;//水平跳跃加速度单位值
+	protected static final int RUB_ADD=1;//水平摩擦力加速度
+	
+	public int xspe=0,//当前水平速度
+			yspe=0,//当前垂直速度
+			//spe1=0,
+			jumpMaxLimit=1,//跳跃次数的最大限制，吃完蘑菇后可以跳两次
+			j_time=0,//当前已经跳跃的次数
+			die_t=0;
 	public int hero_w=25,hero_h=40;
 	public int x,y,x1,y1,x2,y2,hasrun_x=0;
 	public final static int LIM_X1=0,LIM_X2=550;
 	protected boolean march,can_j=true,finish=false;
-	protected boolean b_l,b_u,b_r,b_d;
+	protected boolean b_l,b_u,b_r,b_d;//按键左、上、右、下的状态存储
 	public boolean live = true;
 	public Action act = Action.UNSTAND;
 	public Action touch = Action.STAND;
@@ -128,6 +138,10 @@ class Hero
 		face_dir=this.add_dir;
 	}
 	
+	/**
+	 * 获取水平按键造成的加速度
+	 * @return
+	 */
 	protected int getXAdd()
 	{
 		if(finish==true) return 0;
@@ -139,26 +153,31 @@ class Hero
 		}
 		else if(b_l==true) 
 		{
-			add=(-spe_add);
+			add=(-X_ADD);
 			add_dir=Dirction.L;
 		}
 		else if(b_r==true) 
 		{
-			add=spe_add;
+			add=X_ADD;
 			add_dir=Dirction.R;
 		}
 		return add;
 	}
 
+	/**
+	 * 获取水平摩擦力加速度
+	 * @return
+	 */
 	protected int get_rub_Add()
 	{
 		if(live==false||finish==true) return 0;
 		int rub = 0;
 		if(xspe!=0) 
 		{
-			if(move_dir==Dirction.R) rub=(-rub_add);
-			else if(move_dir==Dirction.L) rub=(rub_add);
+			if(move_dir==Dirction.R) rub=(-RUB_ADD);
+			else if(move_dir==Dirction.L) rub=(RUB_ADD);
 		}
+		//碰到墙后不在有摩擦力
 		if(touch==Action.LTOUCH||touch==Action.RTOUCH)
 		{
 			rub=0;
@@ -170,17 +189,17 @@ class Hero
 	{
 		if(can_j&&act==Action.STAND)
 		{
-			yspe-=y_add*1.3;
+			yspe-=Y_ADD*1.3;
 			b_u=false;
 		}
 		else if(can_j==true&&act==Action.UNSTAND)
 		{	
-			yspe=-y_add*1;
+			yspe=-Y_ADD*1;
 			b_u=false;
 		}
-		if(yspe<=-YSPE)
+		if(yspe<=-YSPE_MAX_LIMIT)
 		{
-			yspe=-YSPE;
+			yspe=-YSPE_MAX_LIMIT;
 			can_j=false;
 		}
 		j_time++;
@@ -219,7 +238,7 @@ class Hero
 		act=Action.UNSTAND;
 		touch=Action.UNTOUCH;		
 		xspe=0;
-		yspe=-YSPE;
+		yspe=-YSPE_MAX_LIMIT;
 		hasrun_x=0;
 		System.out.println("die");
 		
@@ -232,15 +251,18 @@ class Hero
 		if(finish==false)
 		{
 			finish=true;
-			xspe=XSPE;
+			xspe=XSPE_MAX_LIMIT;
 			
 			//过关音效
 			new GameAudio("庆祝").start();
 		}
 	}
 	
+	/**
+	 * Y轴运动判定
+	 */
 	private void yMove() {
-		if(b_u==true&&can_j==true&&j_time<j_lim)
+		if(b_u==true&&can_j==true&&j_time<jumpMaxLimit)
 		{
 			jump();
 			b_u=false;
@@ -253,12 +275,12 @@ class Hero
 		}
 		else if (act==Action.UNSTAND)
 		{
-			yspe+=g_add;
+			yspe+=G_ADD;
 		}
-		int g_add1=g_add;
+		//int g_add1=G_ADD;
 		if(touch==Action.UNTOUCH)
 		{
-			g_add=g_add1;
+			//G_ADD=g_add1;
 		}
 		else if(touch==Action.LTOUCH)
 		{
@@ -279,23 +301,28 @@ class Hero
 	}
 
 
+	/**
+	 * X轴运动判定
+	 */
 	private void xMove() {
 		this.setFacedir();
 		this.setDir();
 		int xadd=this.getXAdd();
 		int radd=this.get_rub_Add();
-		spe1+=(xadd+radd);
+		//新速度等于当前速度加按键提供的动力加速度加上摩擦力加速度（负的）
+		int spe1 = xspe+(xadd+radd);
 
+		//碰撞逻辑处理
 		if(touch==Action.UNTOUCH)
 		{
-			rub_add=1;
+			//rub_add=1;
 		}
 		//碰撞后弹回
 		else if(touch==Action.LTOUCH)
 		{
 			//xspe=-xspe/2;
+			//回弹半个身位
 			x+=hero_w/2;
-			rub_add=3;
 			b_l=false;
 			if(b_l==false)
 			{
@@ -306,21 +333,25 @@ class Hero
 		{
 			//xspe=-xspe/2;
 			x-=hero_w/2;
-			rub_add=3;
 			b_r=false;
 			if(b_r==false)
 			{
 				xspe=0;
 			}
 		}
-		if(-XSPE<spe1&&spe1<XSPE)
+		//计算速度没超过上限
+		if(-XSPE_MAX_LIMIT<=spe1&&spe1<=XSPE_MAX_LIMIT)
 		{
 			xspe=spe1;
 		}
-		else
+		else if(xspe<0)
 		{
-			spe1=xspe;
+			xspe=-XSPE_MAX_LIMIT;
+		}else if(xspe>0)
+		{
+			xspe=XSPE_MAX_LIMIT;
 		}
+		
 		if((x+xspe>LIM_X2||x+xspe<LIM_X1)&&finish==false)//未到终点且越过边界时
 		{
 			x=x1;

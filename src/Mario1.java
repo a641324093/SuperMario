@@ -110,13 +110,13 @@ class Mario1 extends Hero
 		{
 			hero_w=shero_w;
 			hero_h=shero_h;
-			j_lim=1;
+			jumpMaxLimit=1;
 		}
 		else
 		{
 			hero_w=w1;
 			hero_h=h1;
-			j_lim=2;
+			jumpMaxLimit=2;
 		}
 	}
 	

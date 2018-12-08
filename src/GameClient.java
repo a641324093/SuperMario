@@ -18,6 +18,7 @@ public class GameClient extends JFrame //JFrameÖØ»­²»µ÷ÓÃupdate ·½·¨ Ë«»º³å´úÂëÒ
 	
 	public final static int F_W=800,F_H=600;
 	protected Image offscreen = null;
+	//´¦ÓÚ²Ëµ¥¡¢´¦ÓÚÓÎÏ·×´Ì¬
 	protected boolean d_menu=true,d_game=false,initialize=false;
 	
 	Thread paint_thread=null;
@@ -52,6 +53,7 @@ public class GameClient extends JFrame //JFrameÖØ»­²»µ÷ÓÃupdate ·½·¨ Ë«»º³å´úÂëÒ
 		super.paintComponents(g);
 	}
 
+	//»æÖÆÂß¼­
 	public void paint(Graphics g)
 	{
 		//Ë«»º³å×¼±¸
@@ -99,6 +101,7 @@ public class GameClient extends JFrame //JFrameÖØ»­²»µ÷ÓÃupdate ·½·¨ Ë«»º³å´úÂëÒ
 	public void launchFrame ()
 	{
 		this.setTitle("Super Mario");
+		//Í¼ÏñË¢ĞÂÏß³Ì
 		paint_thread = new Thread(new PaintThread());
 		paint_thread.start();
 		this.addKeyListener(new MyMonitor());
@@ -139,6 +142,7 @@ public class GameClient extends JFrame //JFrameÖØ»­²»µ÷ÓÃupdate ·½·¨ Ë«»º³å´úÂëÒ
 		}
 		
 	}
+	
 	private class PaintThread implements Runnable
 	{
 		public void run()
