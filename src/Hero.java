@@ -389,12 +389,12 @@ class Hero
 				||(x+hero_w>obj.x&&x+hero_w<obj.x+obj.all_w&&y>obj.y&&y<obj.y+obj.all_h))//穿越物体检测1
 			{
 				if(obj.y>=y-hero_h) 
-					{
-						y=obj.y-hero_h;
-						yspe=1;
-						System.out.println("Hero穿越物体检测1退出");
-						return;
-					}
+				{
+					y=obj.y-hero_h;
+					yspe=1;
+					System.out.println("Hero穿越物体检测1退出");
+					return;
+				}
 				if(xspe>=0)
 				{
 					x=obj.x-hero_w;

@@ -27,7 +27,10 @@ class GameCreature extends GameObject
 //		action();
 	}
 
-	protected void setAvailable() 
+	/**
+	 * 设置物体还是否有效（是否绘制，是否检测碰撞）
+	 */
+	protected void setAvailable()
 	{
 		if(available==false) return;
 		if(getRectangle().intersects(new Rectangle(0,0,GameClient.F_W,GameClient.F_H)))
