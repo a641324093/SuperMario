@@ -146,7 +146,7 @@ class Mushroom extends GameCreature
 		action();
 	}
 	
-	protected void setAvailable() 
+	protected void checkAvailable() 
 	{
 		if(available==false) return;
 		if((in_x+all_w>=hasrun_x-GameClient.F_W/2))

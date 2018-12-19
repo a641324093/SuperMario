@@ -42,7 +42,8 @@ class Fungus extends GameCreature
 
 	public void draw(Graphics g) {
 		super.draw(g);
-		
+		//如果未初始化过，则先在画面外绘制一遍，为了提前让系统将图片资源加载到内存中
+		//在游戏时则可加快图片的加载速度
 		if(initialize==false)
 		{
 			for(int i=0;i<imgs.length;i++)

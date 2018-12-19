@@ -36,7 +36,7 @@ class GameObject
 	
 	public void draw(Graphics g)
 	{
-		setAvailable();
+		checkAvailable();
 		getHasrun();
 		touchWithHero(gc.player1);
 		move();
@@ -46,15 +46,19 @@ class GameObject
 		this.hasrun_x = gc.player1.hasrun_x;
 	}
 
-	protected void setAvailable() 
+	/**
+	 * 每帧检验物体是否还有效，需要绘制
+	 */
+	protected void checkAvailable() 
 	{
 		if(available==false) return;
+		//若物体不在窗口内且为已经走过的场景则不再有效（绘制)
 		if(getRectangle().intersects(new Rectangle(0,0,GameClient.F_W,GameClient.F_H))==false)
 		{
 			if(x<=-GameClient.F_W/2)
 			{
 				draw=false;
-				//available=false;
+				available=false;
 			}
 		}
 	}

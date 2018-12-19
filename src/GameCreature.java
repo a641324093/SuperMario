@@ -30,7 +30,7 @@ class GameCreature extends GameObject
 	/**
 	 * 设置物体还是否有效（是否绘制，是否检测碰撞）
 	 */
-	protected void setAvailable()
+	protected void checkAvailable()
 	{
 		if(available==false) return;
 		if(getRectangle().intersects(new Rectangle(0,0,GameClient.F_W,GameClient.F_H)))
@@ -96,6 +96,7 @@ class GameCreature extends GameObject
 	{
 		return new Rectangle(x+xspe,y+yspe,all_w,all_h);
 	}
+	
 	/*protected void touchWithObjs() 
 	{
 		if(draw==false||available==false) return;
